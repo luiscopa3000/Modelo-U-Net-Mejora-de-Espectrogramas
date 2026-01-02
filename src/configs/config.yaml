@@ -1,0 +1,88 @@
+# Configuración general
+general:
+  experiment_name: "Audio-GAN"  # Nombre del experimento
+  seed: 42  # Semilla para reproducibilidad
+
+# Rutas y archivos
+paths:
+  train_data: "data/precomputed/train.csv"  # Ruta al archivo de entrenamiento
+  valid_data: "data/precomputed/valid.csv"  # Ruta al archivo de validación
+  checkpoint_dir: "checkpoints/"  # Directorio para guardar los checkpoints
+  logs_dir: "logs/"  # Directorio para los logs
+  metrics_file: "metrics.csv"  # Archivo para guardar métricas
+  model_save_path: "models"  # Carpeta donde guardar el modelo
+
+# Dispositivo de entrenamiento (CPU o GPU)
+device:
+  use_cuda: true  # Si se debe usar la GPU (cuda) o no
+  cuda_device: "cuda:0"  # GPU específica para utilizar
+
+# Hiperparámetros del modelo
+model:
+  generator:
+    type: "UNet"  # Tipo de modelo para el generador
+    input_channels: 1  # Número de canales de entrada (por ejemplo, 1 para monoaural)
+    output_channels: 1  # Número de canales de salida
+    feature_map_sizes: [64, 128, 256, 512]  # Tamaño de los mapas de características para el UNet
+    kernel_size: 3  # Tamaño del kernel en las capas convolucionales
+    padding: 1  # Relleno en las capas convolucionales
+
+  discriminator:
+    type: "Discriminator"  # Tipo de modelo para el discriminador
+    input_channels: 1  # Número de canales de entrada (espectrograma o imagen)
+    output_channels: 1  # Número de canales de salida
+    feature_map_sizes: [64, 128, 256]  # Tamaño de los mapas de características para el discriminador
+
+# Optimización
+optimizer:
+  generator:
+    lr: 2e-4  # Tasa de aprendizaje para el generador
+    betas: [0.5, 0.999]  # Coeficientes de decaimiento de momento para Adam
+    weight_decay: 1e-2  # Decaimiento de peso para regularización L2
+
+  discriminator:
+    lr: 2e-4  # Tasa de aprendizaje para el discriminador
+    betas: [0.5, 0.999]  # Coeficientes de decaimiento de momento para Adam
+    weight_decay: 1e-2  # Decaimiento de peso para regularización L2
+
+# Funciones de pérdida
+loss:
+  adversarial: "BCELoss"  # Pérdida adversarial
+  reconstruction: "L1Loss"  # Pérdida de reconstrucción
+
+# Parámetros de entrenamiento
+training:
+  num_epochs: 100  # Número total de épocas de entrenamiento
+  batch_size: 32  # Tamaño del batch para entrenamiento
+  batch_size_val: 16  # Tamaño del batch para validación
+  shuffle: true  # Si se deben barajar los datos al cargar
+  num_workers: 4  # Número de trabajadores para cargar los datos
+  pin_memory: true  # Si se debe pinchar la memoria para mejorar la transferencia a GPU
+  persistence_workers: true  # Mantener los trabajadores persistentes
+
+# Augmentación de datos
+data_augmentation:
+  use_frequency_cutting: true  # Si se debe usar la función `quitar_frecuencias`
+  min_frequency: 3  # Frecuencia mínima a cortar
+  max_frequency: 30  # Frecuencia máxima a cortar
+  num_lines_to_cut: 3  # Número de líneas a cortar
+  min_rows_to_cut: 20  # Número mínimo de filas a cortar
+
+# Validación
+validation:
+  batch_size: 16  # Tamaño del batch para validación
+  shuffle: true  # Si se deben barajar los datos en la validación
+  metrics_to_save: ["G_loss", "D_loss", "G_val_loss", "D_val_loss"]  # Métricas a guardar durante la validación
+
+# Checkpoints
+checkpoint:
+  save_interval: 1  # Cada cuántas épocas se guarda un checkpoint
+  keep_last_n_checkpoints: 5  # Número de checkpoints a mantener
+
+# Loggers
+logger:
+  use_tensorboard: true  # Si se debe usar TensorBoard para los logs
+  log_interval: 100  # Cada cuántos batches se deben registrar los logs
+
+
+

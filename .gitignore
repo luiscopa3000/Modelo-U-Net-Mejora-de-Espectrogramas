@@ -1,0 +1,14 @@
+# Ignorar caches de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignorar carpeta específica de datos
+src/data/bass_entrenmiento
+src/data/drums_entrenmiento
+src/data/entrenmiento
+src/data/vocal_entrenmiento
+
+
+
+

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sube tu música</title>
+    <!-- Enlazar el archivo CSS desde la carpeta estática -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const audioInput = document.getElementById('audioInput');
+        const fileInput = document.getElementById('file-input');
+        const message = document.getElementById('message');
+
+            // Agregar un evento al input de archivo
+        audioInput.addEventListener('change', function(event) {
+            // Verificamos si hay un archivo seleccionado
+            if (event.target.files.length > 0) {
+                const fileName = event.target.files[0].name; // Obtener el nombre del archivo
+                message.textContent = `Archivo seleccionado: ${fileName}`; // Mostrar el nombre en el mensaje
+            } else {
+                message.textContent = 'Arrastra y suelta tu archivo aquí'; // Si no hay archivo seleccionado
+            }
+        });
+
+        // Función para manejar el envío del formulario con AJAX
+        function uploadAudio(event) {
+            // Verificar y ocultar si los elementos están visibles
+            if (document.getElementById('audio-controls').style.display !== 'none') {
+                document.getElementById('audio-controls').style.display = 'none';
+                document.getElementById('audio-files').innerHTML = '';
+            }
+            if (document.getElementById('contenerfomr').style.display !== 'none') {
+                document.getElementById('contenerfomr').style.display = 'none';
+            }
+            event.preventDefault();  // Evita que el formulario se envíe de forma tradicional
+
+            // Muestra el loader
+            // Muestra el overlay (con el loader) y deshabilita el formulario
+            document.getElementById('overlay').style.display = 'flex';
+
+            // Crear un nuevo FormData para capturar el archivo y otros datos del formulario
+            let formData = new FormData();
+            let fileInput = document.querySelector('input[type="file"]');
+            formData.append('audio', fileInput.files[0]);
+
+            // Enviar la solicitud AJAX usando fetch
+            fetch('/subir', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())  // Esperar respuesta en formato JSON
+            .then(data => {
+                // Si el procesamiento fue exitoso
+                if (data.success) {
+                    
+                    document.getElementById('message').innerHTML = `<p style="color: green;">${data.success}</p>`;
+                    
+                    // Esperar un poco antes de mostrar los archivos de audio (simulando que están listos)
+                    setTimeout(function() {
+                        showAudioFiles();  // Mostrar los reproductores de audio
+                        document.getElementById('audio-controls').style.display = 'block';
+                        document.getElementById('contenerfomr').style.display = 'block';
+                    }, 1000);  // 1 segundos para simular que los archivos están listos
+                } else {
+                    document.getElementById('message').innerHTML = `<p style="color: red;">${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                // En caso de error en la solicitud AJAX
+                document.getElementById('message').innerHTML = `<p style="color: red;">Error al procesar el archivo.</p>`;
+            })
+            .finally(() => {
+                // Ocultar el overlay (con el loader) después de la respuesta
+                document.getElementById('overlay').style.display = 'none';
+            });
+        }
+
+
+        // Función para mostrar los reproductores de audio
+        function showAudioFiles() {
+            const userId = '{{ user_id }}';  // Usar el ID de usuario del backend
+            const audioContainer = document.getElementById('audio-files');
+            audioContainer.innerHTML = '';  // Limpiar cualquier archivo anterior
+
+            // Los nombres de los archivos procesados
+            const files = [
+                `drums_${userId}.wav`,
+                `bass_${userId}.wav`,
+                `vocals_${userId}.wav`,
+                `others_${userId}.wav`
+            ];
+
+            // Crear un reproductor de audio para cada archivo
+            //files.forEach(file => {
+            //    const audioElement = document.createElement('audio');
+            //    audioElement.controls = true;
+            //    audioElement.src = `/download/${file}`;
+            //    audioContainer.appendChild(audioElement);
+            //    audioContainer.appendChild(document.createElement('br'));
+            //});
+
+
+            // Crear un reproductor de audio para cada archivo
+            files.forEach(file => {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = `/download/${file}`;
+
+                // Crear un contenedor para el reproductor y el nombre del archivo
+                const fileContainer = document.createElement('div');
+
+                // Crear un texto que muestra el nombre del archivo
+                const fileName = document.createElement('p');
+                //fileName.textContent = file;  // Mostrar el nombre del archivo
+                fileName.textContent = file.split('_')[0]+':';  // Esto toma la parte antes del primer guion bajo
+
+                
+                // Agregar la clase 'titulo-rep' al elemento <p>
+                fileName.classList.add('titulo-rep');  // Añadir la clase
+
+                // Agregar el reproductor y el nombre al contenedor
+                fileContainer.appendChild(fileName);  // Mostrar el nombre debajo del reproductor
+                fileContainer.appendChild(audioElement);
+
+                // Agregar el contenedor al contenedor principal
+                audioContainer.appendChild(fileContainer);
+            });
+
+        }
+        
+        // Función para reproducir todos los audios
+        function playAll() {
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(audio => {
+                audio.play(); // Reproducir cada audio
+            });
+        }
+
+        // Función para pausar todos los audios
+        function pauseAll() {
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(audio => {
+                audio.pause(); // Pausar cada audio
+            });
+        }
+
+        // Función para reiniciar todos los audios (volver al inicio)
+        function resetAll() {
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(audio => {
+                audio.currentTime = 0; // Reiniciar cada audio al principio
+                audio.pause(); // Asegurarse de que esté pausado en el principio
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Separador de Instrumentos Musicales</h1>
+    </header>
+
+    <!-- <p>{{ user_id }}</p> -->
+
+    <div class="container">
+        <!-- Overlay con el loader -->
+        <div id="overlay" style="display: none;">
+            
+            <div class="overlay-content">
+                <span class="loader"></span>
+                <p class="p_carga">Espere, procesando...</p>
+            </div>
+        </div>
+        <h2>Sube tu archivo de música</h2>
+        <form id="uploadForm" onsubmit="uploadAudio(event)" enctype="multipart/form-data">
+            <div class="file-drop-area" id="dropArea">
+                <p>Arrastra y suelta tu archivo aquí</p>
+            </div>
+            <label for="audioInput" class="custom-file-label">Seleccionar archivo</label>
+            <input type="file" id="audioInput" name="audio" accept=".wav, .mp3, .ogg, .flac, .aac, .m4a" required>
+            <br>
+            <!--<input type="file" name="audio" accept=".wav" required>-->
+            <button type="submit">Subir</button>
+        </form>
+
+        <!-- Aquí se mostrarán los mensajes de éxito o error -->
+        <div id="message"></div>
+
+        <!-- Aquí se mostrarán los reproductores de audio después del procesamiento -->
+        <div id="audio-files"></div>
+            <!-- Controles para manejar los reproductores de audio -->
+        <div id="audio-controls" style="display: none;">
+            <button onclick="playAll()">Reproducir Todos</button>
+            <button onclick="pauseAll()">Pausar Todos</button>
+            <button onclick="resetAll()">Reiniciar Todos</button>
+        </div>
+
+        <div class="contenedor" id="contenerfomr" style="display: none;">
+            <div class="titulo">
+                <h2>¡Tu opinión es nuestro combustible! 🚀 ¡Ayúdanos a mejorar con tu evaluación!</h2>
+            </div>
+            <div class="google-form">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdpCBJQZWxGrjlajLjrxPDDPETFeaS-NCX8cAkyn3_N4jyo0Q/viewform?embedded=true" width="640" height="5234" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileDropArea = document.querySelector('.file-drop-area');
+            const fileInput = document.querySelector('input[type="file"]');  // Seleccionamos el input de tipo "file"
+            
+            // Detectar cuando el archivo se acerca
+            fileDropArea.addEventListener('dragover', function (event) {
+                event.preventDefault();  // Necesario para que el área acepte el arrastre
+                fileDropArea.classList.add('stretch'); // Estira el área
+            });
+
+            // Detectar cuando el archivo se aleja
+            fileDropArea.addEventListener('dragleave', function () {
+                fileDropArea.classList.remove('stretch'); // Vuelve al tamaño original
+            });
+
+            const allowedTypes = ["audio/wav", "audio/mp3", "audio/ogg", "audio/flac", "audio/aac", "audio/m4a"];
+
+            // Función para verificar la extensión del archivo
+            function checkFileExtension(file) {
+                const validExtensions = ['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a'];
+                const fileExtension = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+                return validExtensions.includes(fileExtension);
+            }
+            // Detectar cuando un archivo es soltado
+            fileDropArea.addEventListener('drop', function (event) {
+                event.preventDefault();  // Evita el comportamiento por defecto (abrir el archivo)
+                fileDropArea.classList.remove('stretch'); // Quitar el estiramiento
+
+                const file = event.dataTransfer.files[0];  // Obtenemos el archivo
+
+                if (file && (allowedTypes.includes(file.type) || checkFileExtension(file))) {
+                    // Asignamos el archivo al input de tipo "file"
+                    fileInput.files = event.dataTransfer.files;
+
+                    // Mostrar el nombre del archivo cargado (puedes personalizar esta parte)
+                    const fileNameDisplay = document.querySelector('#dropArea p');
+                    fileNameDisplay.textContent = `Archivo cargado: ${file.name}`;
+
+                    console.log("Archivo de audio recibido:", file.name);
+                } else {
+                    alert("Por favor, sube un archivo de audio válido (.wav, .mp3, .ogg, .flac, .aac, .m4a).");
+                }
+            });
+            // Mostrar el nombre del archivo cuando se selecciona desde el input
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files[0];
+                const fileNameDisplay = document.querySelector('#dropArea p');
+
+                if (file) {
+                    fileNameDisplay.textContent = `Archivo cargado: ${file.name}`;
+                    console.log("Archivo seleccionado:", file.name);
+                } else {
+                    fileNameDisplay.textContent = 'Arrastra y suelta tu archivo aquí';
+                }
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mensajes = [
+                "🎧 Preparando la magia musical...",
+                "🛠️ Separando tus pistas con cariño...",
+                "🐢 Esto puede tardar un poquito... pero valdrá la pena 😄",
+                "🥁 ¡Tus tambores están calentando motores!",
+                "🎤 Buscando la voz entre los bits...",
+                "📀 Desenredando las notas... 🎼",
+                "🧙‍♂️ Un mago está trabajando en tu audio...",
+                "🎷 El saxofón está afinando sus notas... 🎶",
+                "⏳ Esto no es lento... es arte en proceso 😎",
+                "🚀 ¡Casi listo para despegar!",
+                "🍀 Gracias por tu paciencia, la buena música toma tiempo.",
+                "🤖 Separando frecuencias como todo un cyborg musical...",
+                "🔊 ¡Ya casi puedes subirle el volumen!"
+            ];
+
+            const pCarga = document.querySelector('.p_carga');
+            let index = 0;
+
+            setInterval(() => {
+                // Fade out
+                pCarga.style.opacity = 0;
+
+                setTimeout(() => {
+                    // Cambiar texto y hacer fade in
+                    pCarga.textContent = mensajes[index];
+                    pCarga.style.opacity = 1;
+
+                    // Siguiente mensaje
+                    index = (index + 1) % mensajes.length;
+                }, 500); // Tiempo suficiente para que el fade out se complete
+            }, 10000); // Cambio de mensaje cada 10 segundos
+        });
+    </script>
+</body>
+</html>

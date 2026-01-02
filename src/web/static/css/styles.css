@@ -1,0 +1,312 @@
+/* Estilo para todos los h1 */
+
+
+
+/* Estilos generales para el body */
+body {
+    font-family: 'Lora', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F9F9F9;  /* Fondo claro para mantener la armonía con los verdes */
+}
+
+/* Estilos de la cabecera */
+header {
+    position: relative;
+    padding: 40px 20px;  /* Espaciado amplio */
+    background: linear-gradient(135deg, rgba(210, 255, 210, 0.6), rgba(240, 255, 240, 0.5), rgba(255, 255, 255, 0.2)); /* Gradiente suave y moderno */
+    text-align: center;  /* Centrado del texto */
+    color: #4CAF50;  /* Un verde suave para el texto */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Sombra suave para darle profundidad */
+    border-bottom: 2px solid rgba(240, 255, 240, 0.7); /* Borde inferior sutil */
+}
+
+/* Estilo para el título */
+header h1 {
+    font-size: 2.8em;  /* Título grande */
+    font-weight: 700;  /* Negrita para mayor impacto */
+    letter-spacing: 1.5px;  /* Espaciado entre letras para darle un toque moderno */
+    color: #6DBF5F;  /* Verde suave */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);  /* Sombra sutil para hacer que el texto resalte */
+    margin: 0;  /* Eliminar márgenes */
+}
+
+/* Estilos para los enlaces, si los tienes en la cabecera */
+header a {
+    color: #6DBF5F;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para los enlaces */
+header a:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #A8E6A1;  /* Color más claro cuando se pasa el mouse */
+}
+
+
+
+
+
+
+
+h2 {
+    text-align: center;
+}
+#uploadForm {
+    width: 100%;
+  display: flex;
+  flex-direction: column;       /* Coloca los elementos en una columna */
+  align-items: center;
+}
+/* Estilos para el container */
+/* Estilos para el container */
+.container {
+    position: relative;  /* Permite usar top de manera efectiva */
+    top: 20px;  /* Establece el contenedor a 30% de la altura de la ventana */
+    margin: 0 auto;  /* Centrado horizontal automático */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;  /* Bordes redondeados estilo iOS */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    transform: scale(0);  /* Comienza con un tamaño de 0 */
+    transform-origin: center;  /* Estira desde el centro */
+    animation: stretchIn 1s ease-out forwards;  /* Aplicar la animación */
+    width: 100%;  /* Se ajusta al ancho disponible */
+    max-width: 50vw;  /* Valor por defecto para pantallas grandes */
+}
+
+/* Para tablets (pantallas medianas) */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 80vw;  /* Máximo 80% del ancho de la pantalla */
+    }
+}
+
+/* Para móviles (pantallas pequeñas) */
+@media (max-width: 600px) {
+    .container {
+        max-width: 85vw;  /* Máximo 90% del ancho de la pantalla */
+    }
+}
+
+
+/* Definir la animación de estiramiento */
+@keyframes stretchIn {
+    from {
+        transform: scale(0);  /* Empieza con tamaño 0 */
+        opacity: 0;  /* Empieza invisible */
+    }
+    to {
+        transform: scale(1);  /* Alcanza el tamaño normal */
+        opacity: 1;  /* Se hace completamente visible */
+    }
+}
+
+
+
+/* Estilo para el input de archivo (ocultarlo visualmente) */
+input[type="file"] {
+  display: none; /* Oculta el botón predeterminado */
+}
+
+/* Estilo para la etiqueta del archivo (botón personalizado) */
+.custom-file-label {
+  margin: 10px 0;
+  padding: 12px 30px;
+  background-color: #f0f5f1;  /* Color suave y neutral, diferente al verde del botón */
+  color: #333;                 /* Color del texto */
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 200px; /* Ajusta el tamaño del botón */
+  text-align: center;
+}
+
+/* Efecto al pasar el ratón sobre el botón personalizado */
+.custom-file-label:hover {
+  background-color: #e0e8e4; /* Color ligeramente más oscuro en hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+
+
+
+
+button {
+    margin-top: 10px;
+    background-color: #4CAF50;    /* Color base verde */
+    color: white;                 /* Color del texto */
+    border: none;                 /* Sin bordes */
+    border-radius: 25px;          /* Bordes redondeados */
+    padding: 12px 30px;           /* Espaciado dentro del botón */
+    font-size: 16px;              /* Tamaño de texto */
+    font-weight: bold;            /* Negrita para el texto */
+    text-transform: uppercase;    /* Texto en mayúsculas */
+    cursor: pointer;             /* Cambia el cursor cuando pasas sobre el botón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    transition: all 0.3s ease;    /* Transiciones suaves para efectos */
+    width: 200px;
+}
+button:hover {
+  background-color: #45a049;    /* Color un poco más oscuro para el hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+  transform: translateY(-2px);  /* Efecto de "levantamiento" */
+}
+
+/* Estilo para el área de drop */
+.file-drop-area {
+    border: 2px dashed #5e9460;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    max-width: 100%;
+    min-width: 300px;
+    box-sizing: border-box;
+    font-size: 16px;
+    min-height: 200px;
+    margin-bottom: 5px;
+    width: 70vh;
+}
+
+.file-drop-area.stretch {
+    transform: scale(1.1);  /* Estira el área */
+}
+
+/* Cuando el área está vacía y sin archivos arrastrados */
+.file-drop-area p {
+    margin: 0;
+    font-weight: bold;
+    color: #666;
+}
+
+/* Mensaje que aparece cuando se detecta un archivo en el área de drop */
+.file-drop-area.dragging {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo del overlay */
+
+/* Estilo del overlay con efecto blur */
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Gradiente de color verde con transparencia para el fondo */
+    background: linear-gradient(135deg, rgba(210, 255, 210, 0.4), rgba(240, 255, 240, 0.3), rgba(255, 255, 255, 0.1));
+    
+    /* Aplicamos un blur a todo el contenido detrás del overlay */
+    backdrop-filter: blur(15px);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;  /* Asegúrate de que esté encima del formulario */
+    border-radius: 10px;
+}
+.p_carga {
+    position: absolute;
+    bottom: 90px; /* espacio desde el borde inferior */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.loader {
+    position: fixed;          /* Posición fija para que esté en el centro de la pantalla */
+    top: 50%;                 /* Centrado vertical */
+    left: 50%;                /* Centrado horizontal */
+    transform: translate(-50%, -50%) scale(2); /* Ajusta el punto de referencia para centrar */
+    width: 85px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(#A8E6A1 50px, transparent 0),  /* Verde claro */
+                      linear-gradient(#6DBF5F 50px, transparent 0),  /* Verde medio */
+                      linear-gradient(#4CAF50 50px, transparent 0),  /* Verde más intenso */
+                      linear-gradient(#6DBF5F 50px, transparent 0),  /* Verde medio */
+                      linear-gradient(#A8E6A1 50px, transparent 0),  /* Verde claro */
+                      linear-gradient(#4CAF50 50px, transparent 0);  /* Verde más intenso */
+    background-position: 0px center, 15px center, 30px center, 45px center, 60px center, 75px center, 90px center;
+    animation: rikSpikeRoll 0.65s linear infinite alternate;
+}
+
+@keyframes rikSpikeRoll {
+    0% { background-size: 10px 3px; }
+    16% { background-size: 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px, 10px 3px; }
+    33% { background-size: 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px; }
+    50% { background-size: 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px; }
+    66% { background-size: 10px 3px, 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px; }
+    83% { background-size: 10px 3px, 10px 3px, 10px 10px, 10px 30px, 10px 50px, 10px 3px; }
+    100% { background-size: 10px 3px, 10px 3px, 10px 3px, 10px 10px, 10px 30px, 10px 50px; }
+}
+
+    
+/* Centrar el contenedor del iframe en la pantalla */
+.contenedor {
+  display: flex;
+  justify-content: center;  /* Centra horizontalmente */
+  align-items: center;      /* Centra verticalmente */
+  height: 100vh;            /* Ocupa toda la altura de la ventana */
+  margin: 0;                /* Elimina márgenes si los hay */
+  overflow: hidden;
+}
+
+/* Estilo del div que contiene el iframe */
+.google-form {
+  width: 100%;              /* Ocupa todo el ancho disponible */
+  height: 500px;            /* Establece una altura fija de 500px */
+  /*overflow: auto;           /* Habilita el scroll si el iframe es más grande */
+}
+
+/* Estilo del iframe dentro del contenedor */
+.google-form iframe {
+  width: 100%;              /* El iframe ocupa todo el ancho del contenedor */
+  height: 100%;             /* El iframe ocupa toda la altura del contenedor */
+  border: none;            /* Elimina el borde del iframe */
+}
+
+/* Estilo para el título */
+.titulo h2 {
+  font-size: 2rem;              /* Tamaño grande */
+  color: #4CAF50;               /* Un verde vibrante */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;          /* Espacio entre el título y el formulario */
+  padding: 0 10px;
+}
+
+
+
+/* Estilo para los nombres de los reproductores */
+.titulo-rep {
+    font-weight: bold;
+    color: #4CAF50;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 20px;
+}
